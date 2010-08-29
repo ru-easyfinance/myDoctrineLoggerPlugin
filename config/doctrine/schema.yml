@@ -1,0 +1,26 @@
+myDoctrineLoggerEvent:
+#  connection: default
+  tableName: my_logger_logs
+  actAs:
+    Timestampable:
+      updated: { disabled: true }
+  columns:
+    state:                  # критичность ошибки
+      type:    enum
+      values:  [fail, info, notice, warning]
+    component:              # компонент приложения
+      type:    string(255)
+    label:                  # название события
+      type:    string(255)
+    result:                 # расшифровка
+      type:    string(1000)
+    context:                # данные события
+      type:    clob
+    user_id:                # Идентификатор пользователя
+      type:    integer(4)
+      notnull: false
+      unsigned: true
+  options:
+    symfony:
+      form:   false
+      filter: false
