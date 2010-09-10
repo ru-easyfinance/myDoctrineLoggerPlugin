@@ -8,15 +8,24 @@ myDoctrineLoggerEvent:
     state:                  # критичность ошибки
       type:    enum
       values:  [fail, info, notice, warning]
+      default: info
+      notnull: true
     component:              # компонент приложения
       type:    string(255)
+      notnull: true
     label:                  # название события
       type:    string(255)
+      notnull: true
     result:                 # расшифровка
       type:    string(1000)
+      notnull: true
     context:                # данные события
       type:    clob
     user_id:                # Идентификатор пользователя
+      type:    integer(4)
+      notnull: false
+      unsigned: true
+    model_id:               # Идентификатор записи в БД
       type:    integer(4)
       notnull: false
       unsigned: true
