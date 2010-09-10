@@ -19,6 +19,10 @@ class myDoctrineLoggerPluginConfiguration extends sfPluginConfiguration
         parent::initialize();
 
         $this->myDoctrineLogger = new myDoctrineLogger($this->dispatcher, array());
+
+        if (!$this->dispatcher->hasListeners('app.activity')) {
+            $this->dispatcher->connect('app.activity', array($this->myDoctrineLogger, 'listenToLogEvent'));
+        }
     }
 
 }
