@@ -48,7 +48,13 @@ class myDoctrineLogger extends sfLogger
 
         // Статус: fail, info, notice, warning
         if (isset($parameters['state'])) {
-            $record->setState($parameters['state']);
+            $definition = Doctrine_Core::getTable('myDoctrineLoggerEvent')
+                        ->getColumnDefinition('state');
+
+            $states = $definition['values'];
+            if (in_array($parameters['state'], $states)) {
+                $record->setState($parameters['state']);
+            }
         }
 
         // Идентификатор связанного объекта, если есть
@@ -58,7 +64,7 @@ class myDoctrineLogger extends sfLogger
 
         // Идентификатор пользователя - инициатора события, если есть
         if (isset($parameters['user'])) {
-            if (is_object($parameters['user'])) {
+            if (is_object($parameters['user']) && ($parameters['user'] instanceof Doctrine_Record)) {
                 $parameters['user'] = $parameters['user']->getId();
             }
             $record->setUserId((int) $parameters['user']);
@@ -70,12 +76,14 @@ class myDoctrineLogger extends sfLogger
         if (!isset($parameters['name'])) {
             throw new sfException('Необходимо назвать событие: заполнить параметр ["name"]');
         }
+        $record->setLabel((string) $parameters['name']);
+
+        // расшифровка результата
         if (!isset($parameters['description'])) {
             throw new sfException('Необходимо назвать событие: заполнить параметр ["description"]');
         }
-        $record->setLabel((string) $parameters['name']);
-        // расшифровка результата
         $record->setResult((string) $parameters['description']);
+
         // Данные события
         if(isset($parameters['env'])) {
             $record->setContext((string) $parameters['env']);
