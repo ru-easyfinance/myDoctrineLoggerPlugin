@@ -17,7 +17,7 @@ class myDoctrineLogger extends sfLogger
     /**
      * Инициализация логгера
      */
-    public function initialize(sfEventDispatcher $dispatcher, array $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = array())
     {
         $this->dispatcher = $dispatcher;
         $this->options = $options;
